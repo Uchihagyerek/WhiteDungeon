@@ -33,7 +33,6 @@ public class MainMenu extends Canvas {
     public void ui(JFrame frame){
         thisFrame=frame;
         DataBase db=new DataBase();
-        String[] save= db.getSave();
 
 
         start =new JButton("Play");
@@ -41,7 +40,7 @@ public class MainMenu extends Canvas {
         start.setBackground(Color.WHITE);
         start.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                startGame("NEW");
+                startGame();
             }
         });
 
@@ -61,14 +60,11 @@ public class MainMenu extends Canvas {
 
 
     }
-    private void startGame(String type){
-        if(type.equals("NEW")){
+    private void startGame(){
+
         Map map=new Map();
-        map.start(true);
-        }else{
-            Map map=Map.load();
-            map.start(false);
-        }
+        map.start();
+
 
         thisFrame.dispose();
     }

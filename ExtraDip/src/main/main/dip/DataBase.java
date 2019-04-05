@@ -56,6 +56,8 @@ public class DataBase {
 
         monster= monsters.get(rand.nextInt(monsters.size()));
 
+        close();
+
         return monster;
     }public String[] getBoss(){
         String[] monster;
@@ -83,33 +85,10 @@ public class DataBase {
         }
 
         monster= monsters.get(rand.nextInt(monsters.size()));
+        close();
 
         return monster;
     }
-    public String[] getSave(){
-        String[] save=new String[9];
 
-        try{
-            Statement stm=conn.createStatement();
-            ResultSet rs=stm.executeQuery("SELECT * FROM save");
-
-            while(rs.next()){
-
-                save[0]=rs.getString("playerlevel");
-                save[1]=rs.getString("currentxp");
-                save[2]=rs.getString("currenthealth");
-                save[3]=rs.getString("currentmana");
-                save[4]=rs.getString("helmet");
-                save[5]=rs.getString("armor");
-                save[6]=rs.getString("weapon");
-                save[7]=rs.getString("consumables");
-                save[8]=rs.getString("class");
-            }
-
-        }catch(SQLException e){
-            System.out.println(e.getMessage());
-        }
-        return save;
-    }
 
 }

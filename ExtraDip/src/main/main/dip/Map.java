@@ -41,7 +41,7 @@ public class Map extends Canvas {
         setSize(new Dimension (900, 900));
         tries=0;
         addKeyListener(new KeyAdapter () {
-           @Override
+            @Override
             public void keyPressed(KeyEvent evt) {
                 moveIt(evt);
             }
@@ -129,8 +129,15 @@ catch (ArrayIndexOutOfBoundsException ex){
                 }
             }
         }
+
         rollRoom(x,y);
-        map[x][y]=4;
+        map[x][y]=4;   //boss
+        for (int i = 0; i <mapsize ; i++) {
+            for (int j = 0; j < mapsize; j++) {
+                System.out.print(map[j][i]);
+            }
+            System.out.println();
+        }
         repaint();
     }
 
@@ -197,7 +204,12 @@ catch (ArrayIndexOutOfBoundsException ex){
             monsters--;
         }else if(map[myY][myX]==4){
             System.out.println("Boss battle starts");
+            map[myY][myX]=1;
             startBattle();
+            start();
+
+
+
         }
         ig.drawImage(image, 0,0,this);
     }
@@ -269,9 +281,10 @@ catch (ArrayIndexOutOfBoundsException ex){
     private boolean bossCheck(){
         return monsters<=0;
     }
-    public  void start(boolean _new){
-        if(_new)
+    public  void start(){
         this.generateMap ();
+        if(frame!=null)
+        frame.dispose();
         frame = new JFrame("Basic Game");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().add(this);
@@ -281,24 +294,6 @@ catch (ArrayIndexOutOfBoundsException ex){
         this.requestFocus();
     }
 
-    public static Map load(){
-        Map map = null;
-        try {
-            FileInputStream fileIn = new FileInputStream("src/db/map.ser");
-            ObjectInputStream in = new ObjectInputStream(fileIn);
-            map = (Map) in.readObject();
-            in.close();
-            fileIn.close();
-        } catch (IOException i) {
-            i.printStackTrace();
-            return null;
-        } catch (ClassNotFoundException c) {
-            System.out.println("Class not found");
-            c.printStackTrace();
-            return null;
-        }
 
-        return map;
-    }
 
 }
