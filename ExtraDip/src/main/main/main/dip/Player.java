@@ -12,7 +12,7 @@ public class Player extends Entity{
     public Player(String name, String playerClass, Map map){
         this.name=name;
         this.playerClass=playerClass;
-        damage=1000;
+        damage=20;
         level=1;
         maxHealth=500;
         maxMana=500;
@@ -31,14 +31,24 @@ public class Player extends Entity{
             else
                 exp = 0;
             level++;
+            damage*=1.2;
             maxHealth += level * 100;
             maxMana += level * 100;
             remainingExp *= 1.2;
             health = maxHealth;
             mana = maxMana;
+            System.out.println ("LEVEL UP! Your stats have been increased!");
+            getStats();
             levelUp();
         }
     }
+
+    public void getStats() {
+        System.out.println ("Health: "+maxHealth);
+        System.out.println ("Mana: "+maxMana);
+        System.out.println ("Damage: "+damage);
+    }
+
     int attack() {
         int damage=0;
 

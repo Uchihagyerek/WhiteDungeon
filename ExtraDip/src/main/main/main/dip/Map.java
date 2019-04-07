@@ -13,24 +13,25 @@ import java.util.Vector;
 
 public class Map extends Canvas {
     JFrame frame=null;
-    public int roomCount;
-    public int maxRooms;
-    public int tries;
-    public int x;
-    public int y;
-    public int startX;
-    public int startY;
-    public int myX;
-    public int myY;
-    public int map[][];
-    public int mapsize=15;
-    public int monsters=0;
-    public boolean boss=false;
-    public boolean playerDead=false;
-    public static Player player;
-    public Random random = new Random();
-    public boolean defeated=false;
-    public Point[] deltas = {
+    private int roomCount;
+    private int maxRooms;
+    private int tries;
+    private int x;
+    private int y;
+    private int startX;
+    private int startY;
+    private int myX;
+    private int myY;
+    private int map[][];
+    private int mapsize=15;
+    int monsters=0;
+    private boolean boss;
+    boolean playerDead;
+    private static Player player;
+    private int levelCount=0;
+    private Random random = new Random();
+    boolean defeated=false;
+    private Point[] deltas = {
             new Point(0, 1),
             new Point(0, -1),
             new Point(1, 0),
@@ -74,6 +75,9 @@ try {
         case KeyEvent.VK_NUMPAD0:
             player.die();
             break;
+        case KeyEvent.VK_I:
+            player.getStats();
+            break;
 
 
     }
@@ -88,13 +92,16 @@ catch (ArrayIndexOutOfBoundsException ex){
 
 
     void generateMap(){
-        if(playerDead=true) {
+        if(playerDead) {
             player = new Player(player.name, player.playerClass, this);
             playerDead=false;
         }
         map=new int[mapsize][mapsize];
         clearMap ();
         fillMap();
+        levelCount++;
+        System.out.println ("Level "+levelCount);
+
 
     }
     private void clearMap(){
@@ -139,6 +146,7 @@ catch (ArrayIndexOutOfBoundsException ex){
             }
             System.out.println();
         }
+        boss=false;
         repaint();
     }
 
@@ -196,7 +204,14 @@ catch (ArrayIndexOutOfBoundsException ex){
                 else {
                     map[myY][myX] = 1;
                     defeated=false;
-                    generateMap ();
+                    if(levelCount<8)
+                        generateMap ();
+                    else {
+                        JOptionPane.showMessageDialog (frame, "You Win!");
+                        frame.dispose ();
+                        MainMenu menu =new MainMenu ();
+                        menu.open (menu);
+                    }
                 }
             }
         }
@@ -210,6 +225,7 @@ catch (ArrayIndexOutOfBoundsException ex){
         g.fillRect (750,500,100,50);
         map[myY][myX]=1;
             System.out.println("You found treasure!");
+            treasureRoom();
         }
         else if (map[myY][myX]==2){
             if(!defeated) {
@@ -224,6 +240,7 @@ catch (ArrayIndexOutOfBoundsException ex){
             }
         }
         ig.drawImage(image, 0,0,this);
+
     }
 
 
@@ -300,6 +317,8 @@ catch (ArrayIndexOutOfBoundsException ex){
             frame.dispose ();
 
         }
+
+        playerDead=false;
         frame = new JFrame("Basic Game");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().add(this);
@@ -308,6 +327,32 @@ catch (ArrayIndexOutOfBoundsException ex){
         frame.setVisible(true);
         this.requestFocus();
     }
+
+    private void treasureRoom(){
+        Treasure treasure=new Treasure ();
+        int type=treasure.getType ();
+        int value=treasure.getValue ();
+        switch(type){
+            case 1:
+                player.maxHealth+=value;
+                player.health+=value;
+                System.out.println ("Your health has been increased by "+value);
+                break;
+            case 2:
+                player.maxMana+=value;
+                player.mana+=value;
+                System.out.println ("Your mana has been increased by "+value);
+                break;
+            case 3:
+                player.damage+=value;
+                System.out.println ("Your damage has been increased by "+value);
+                break;
+
+        }
+    }
+
+
+
 
 
 
