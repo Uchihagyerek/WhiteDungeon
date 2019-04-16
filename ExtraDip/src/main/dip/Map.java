@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Vector;
 
@@ -52,7 +53,14 @@ public class Map extends Canvas {
 
         });
         if(player==null)
-        player=new Player(name,"valami", this);
+        player=new Player(name, this);
+
+        DataBase db=new DataBase();
+
+        if (!Arrays.asList(db.getPlayers()).contains(name)){
+            db.newPlayer(name);
+        }
+
         timer=new Timer(1000, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 player.points-=50;
@@ -103,7 +111,7 @@ catch (ArrayIndexOutOfBoundsException ex){
 
     void generateMap(){
         if(playerDead) {
-            player = new Player(player.name, player.playerClass, this);
+            player = new Player(player.name, this);
             playerDead=false;
         }
         map=new int[mapsize][mapsize];
@@ -218,6 +226,8 @@ catch (ArrayIndexOutOfBoundsException ex){
                         generateMap ();
                     else {
                         JOptionPane.showMessageDialog (frame, "You Win!");
+                        DataBase db=new DataBase();
+                        db.setScore(player.points,player.name);
                         frame.dispose ();
                         MainMenu menu =new MainMenu ();
                         menu.open (menu);

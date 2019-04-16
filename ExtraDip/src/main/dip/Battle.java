@@ -189,6 +189,8 @@ public class Battle extends Canvas {
 
         }
 
+
+
     }
     private void enemyAttack(){
 
@@ -196,8 +198,9 @@ public class Battle extends Canvas {
         setStats ();
 
         if(playerHealth.getValue()<=0){
+
             player.die();
-            player=new Player(player.name,player.playerClass,map);
+            player=new Player(player.name,map);
         }
 
 

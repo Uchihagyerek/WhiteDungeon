@@ -3,16 +3,14 @@ package dip;
 import javax.swing.*;
 
 public class Player extends Entity{
-    public String playerClass;
     public int exp;
     public int points=5000;   //drawtext
     public int remainingExp;
     public int potionsCount;
     public int damage;
     Map map;
-    public Player(String name, String playerClass, Map map){
+    public Player(String name, Map map){
         this.name=name;
-        this.playerClass=playerClass;
         damage=2000;
         level=1;
         maxHealth=500;
@@ -57,6 +55,9 @@ public class Player extends Entity{
         return damage;
     }
     void die(){
+        points-=3000;
+        DataBase db =new DataBase();
+        db.setScore(points, name);
         int restart= JOptionPane.YES_NO_OPTION;
         restart=JOptionPane.showConfirmDialog(null,"Would you like to restart?","You died!",restart);
         if(restart==JOptionPane.YES_OPTION){
